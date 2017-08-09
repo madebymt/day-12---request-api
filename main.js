@@ -1,36 +1,60 @@
-let list= document.querySelector("ul")
-let story = document.querySelector(".story")
-let picture = document.querySelector(".pic")
+let result = document.querySelector(".result")
+let input = document.querySelector(".searchbox").addEventListener("keydown",function(event){
+    if (event.keyCode === 13) {
+    /// keyCode = listen what key you type, 13 means is enter keyCode
+    console.log(event.target.value)
 
-let req = new XMLHttpRequest();
-req.open("GET", "https://api.github.com/users/madebymt")
-req.addEventListener("load", function(){
-    let data = JSON.parse(this.responseText);
-    console.log(list)
-let string =  `
-<li> Name : ${data.name} </li>
-<li> Github URL : <a href="${data.html_url}"> Github User Name </a>
-<li> E-mail : c19890611@gmail.com </li>
-<li> Company: ${data.company} </li>
-<li> Website : donthaveone.com</li>
-`
+let search = event.target.value
+let url = "http://recipepuppyproxy.herokuapp.com/api/?i="
+let result = url+search
 
-let bio = `
-  <h3> The Story </h3>
-  <p>${data.bio}</p>
-`
+console.log(result)
 
-let img = `
-<img src="${data.avatar_url}" alt="picture">
-`
+    fetch(result)
+    .then(
+          function(response){
+              if (response.status !==200) {
+                  console.log(response.status);
+                  return;
+              }
+          response.json()
+          .then (function(data){
+              console.log("Data I need", data );
 
-list.innerHTML = string
-story.innerHTML = bio
-picture.innerHTML = img
+          for (let i = 0 ; i < data.results.length ; i++) {
+
+            //   let title = data.results[i].title
+            //   let href = data.results[i].href
+            //   let ingredients = data.results[i].ingredients
+            //   let img = data.results[i].thumbnail
 
 
+              let string = `
+              <div class = "food">
+              <h3>Title: ${data.results[i].title} </h3>
+              <a href="${data.results[i].href} " </a>
+              <h3>Ingredients:${data.results[i].ingredients} </h3>
+              <img src="${data.results[i].thumbnail}" alt="">
+              </div>
+              `
+                // let string = `
+                // <div class = "food">
+                // <h3>Title: ${title} </h3>
+                // <a href="${href} " </a>
+                // <h3>Ingredients:${ingredients} </h3>
+                // <img src="${img}" alt="">
+                // </div>
+                // `
+                // result.insertAdjacentHTML('beforeEnd', string);
+                result.innerHTML(string)
+          }
 
-    console.log(data)
+          });
+
+      })
+    .catch(function(err) {
+        console.log("Fetch problem: - S", err);
+    });
+
+    }
 })
-
-req.send();
