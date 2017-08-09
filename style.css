@@ -10,6 +10,8 @@ hr {
     margin: 30px;
 }
 
+
+
 .food {
     width: 300px;
     height: 300px;
@@ -18,12 +20,21 @@ hr {
 }
 
 .result{
+    /*width: 400px;
+    height:400px;*/
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    flex-basis: auto;2
     margin-top: 20px;
     margin:5px;
 
 }
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
 
 /*.wrapper2 {
     display: flex;
